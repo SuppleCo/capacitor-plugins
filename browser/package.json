@@ -1,5 +1,5 @@
 {
-  "name": "@capacitor/browser",
+  "name": "supp-capacitor/browser",
   "version": "7.0.1",
   "description": "The Browser API provides the ability to open an in-app browser and subscribe to browser events.",
   "main": "dist/plugin.cjs.js",

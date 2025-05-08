@@ -105,6 +105,32 @@ export interface OpenOptions {
    * @since 4.0.0
    */
   height?: number;
+
+  /**
+   * iOS only: Use ASWebAuthenticationSession instead of SFSafariViewController.
+   * Useful for OAuth flows or when you need access to the callback URL.
+   *
+   * Ignored on other platforms.
+   *
+   * @since 7.1.0
+   */
+  useASWebAuthenticationSession?: boolean;
+
+  /**
+   * iOS only: The callback URL scheme to listen for when using ASWebAuthenticationSession.
+   * Required if useASWebAuthenticationSession is true.
+   *
+   * @since 7.1.0
+   */
+  callbackUrlScheme?: string;
+
+  /**
+   * iOS only: Whether to use an ephemeral web browser session (no cookies shared).
+   * Only applies when useASWebAuthenticationSession is true.
+   *
+   * @since 7.1.0
+   */
+  prefersEphemeralWebBrowserSession?: boolean;
 }
 
 /**

@@ -29,6 +29,21 @@ const openCapacitorSite = async () => {
 };
 ```
 
+## Example: Using ASWebAuthenticationSession (iOS only)
+
+```typescript
+import { Browser } from '@capacitor/browser';
+
+const openWithWebAuthSession = async () => {
+  await Browser.open({
+    url: 'https://example.com/oauth',
+    useASWebAuthenticationSession: true,
+    callbackUrlScheme: 'myapp', // your app's custom scheme
+    prefersEphemeralWebBrowserSession: true, // optional
+  });
+};
+```
+
 ## API
 
 <docgen-index>
@@ -140,14 +155,17 @@ Remove all native listeners for this plugin.
 
 Represents the options passed to `open`.
 
-| Prop                    | Type                                   | Description                                                                                                                                | Since |
-| ----------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----- |
-| **`url`**               | <code>string</code>                    | The URL to which the browser is opened.                                                                                                    | 1.0.0 |
-| **`windowName`**        | <code>string</code>                    | Web only: Optional target for browser open. Follows the `target` property for window.open. Defaults to _blank. Ignored on other platforms. | 1.0.0 |
-| **`toolbarColor`**      | <code>string</code>                    | A hex color to which the toolbar color is set.                                                                                             | 1.0.0 |
-| **`presentationStyle`** | <code>'fullscreen' \| 'popover'</code> | iOS only: The presentation style of the browser. Defaults to fullscreen. Ignored on other platforms.                                       | 1.0.0 |
-| **`width`**             | <code>number</code>                    | iOS only: The width the browser when using presentationStyle 'popover' on iPads. Ignored on other platforms.                               | 4.0.0 |
-| **`height`**            | <code>number</code>                    | iOS only: The height the browser when using presentationStyle 'popover' on iPads. Ignored on other platforms.                              | 4.0.0 |
+| Prop                                    | Type                                   | Description                                                                                                                                                                 | Since |
+| --------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| **`url`**                               | <code>string</code>                    | The URL to which the browser is opened.                                                                                                                                     | 1.0.0 |
+| **`windowName`**                        | <code>string</code>                    | Web only: Optional target for browser open. Follows the `target` property for window.open. Defaults to _blank. Ignored on other platforms.                                  | 1.0.0 |
+| **`toolbarColor`**                      | <code>string</code>                    | A hex color to which the toolbar color is set.                                                                                                                              | 1.0.0 |
+| **`presentationStyle`**                 | <code>'fullscreen' \| 'popover'</code> | iOS only: The presentation style of the browser. Defaults to fullscreen. Ignored on other platforms.                                                                        | 1.0.0 |
+| **`width`**                             | <code>number</code>                    | iOS only: The width the browser when using presentationStyle 'popover' on iPads. Ignored on other platforms.                                                                | 4.0.0 |
+| **`height`**                            | <code>number</code>                    | iOS only: The height the browser when using presentationStyle 'popover' on iPads. Ignored on other platforms.                                                               | 4.0.0 |
+| **`useASWebAuthenticationSession`**     | <code>boolean</code>                   | iOS only: Use ASWebAuthenticationSession instead of SFSafariViewController. Useful for OAuth flows or when you need access to the callback URL. Ignored on other platforms. | 7.1.0 |
+| **`callbackUrlScheme`**                 | <code>string</code>                    | iOS only: The callback URL scheme to listen for when using ASWebAuthenticationSession. Required if useASWebAuthenticationSession is true.                                   | 7.1.0 |
+| **`prefersEphemeralWebBrowserSession`** | <code>boolean</code>                   | iOS only: Whether to use an ephemeral web browser session (no cookies shared). Only applies when useASWebAuthenticationSession is true.                                     | 7.1.0 |
 
 
 #### PluginListenerHandle
