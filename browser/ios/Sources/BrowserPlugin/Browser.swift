@@ -40,6 +40,7 @@ import AuthenticationServices
     @objc public func cleanup() {
         safariViewController = nil
         webAuthSession = nil
+        lastCallbackURL = nil
     }
 
     public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
@@ -63,6 +64,7 @@ import AuthenticationServices
 
     // MARK: - ASWebAuthenticationSession
     @objc public func prepareWebAuthSession(for url: URL, callbackURLScheme: String?, prefersEphemeral: Bool = false, completion: @escaping (Bool) -> Void) {
+        lastCallbackURL = nil
         print("🔍 [Browser] Preparing ASWebAuthenticationSession")
         print("🔍 [Browser] URL: \(url.absoluteString)")
         print("🔍 [Browser] Callback URL Scheme: \(callbackURLScheme ?? "nil")")
@@ -106,12 +108,22 @@ import AuthenticationServices
 
     // MARK: - ASWebAuthenticationPresentationContextProviding
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        // Use the key window, which is what SFSafariViewController would use
-        if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
-            return window
+        if Thread.isMainThread {
+            if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+                return window
+            }
+            return ASPresentationAnchor()
+        } else {
+            var anchor: ASPresentationAnchor?
+            DispatchQueue.main.sync {
+                if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+                    anchor = window
+                } else {
+                    anchor = ASPresentationAnchor()
+                }
+            }
+            return anchor!
         }
-        // Fallback: return a new window if none found
-        return ASPresentationAnchor()
     }
 
     @objc public func getLastCallbackURL() -> String? {
